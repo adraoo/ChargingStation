@@ -48,6 +48,7 @@
                     <button id="ShowFirmwareStatusNotificationRequestButton">Firmware Status Notification</button>
 
                     <button id="ShowRAWRequestButton">RAW Request</button>
+                    <button id="ShowRemoteStopTransactionConfButton">RemoteStopTransactionConf</button>
 
                 </div>
 
@@ -458,6 +459,28 @@
                             </div>
                         </div>
                         <button id="RAWRequestButton" class="commandButton">send</button>
+                    </div>
+
+                    <div id="RemoteStopTransactionConfRequest" class="command">
+                        <div class="description">RemoteStopTransaction.conf</div>
+                        <div class="properties">
+                            <div class="row">
+                                <div class="key">Transaction id</div>
+                                <div class="value">
+                                    <select id="RemoteStopTransactionConfSelect_Id">
+                                    </select>
+                            </div>
+                        </div>
+                            <div class="row">
+                                <div class="key">Status</div>
+                                <div class="value">
+                                    <select id="RemoteStopTransactionConfSelect_Status">
+                                        <option>Accepted</option>
+                                        <option>Rejected</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <button id="RemoteStopTransactionConfButton" class="commandButton" disabled>send</button>
                     </div>
             
                 </div>

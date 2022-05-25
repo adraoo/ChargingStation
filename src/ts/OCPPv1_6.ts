@@ -24,7 +24,7 @@ class OCPPv1_6 {
     //#region Data
 
     private readonly commandsDiv:                                        HTMLDivElement;
-    private readonly bootNotificationRequestDiv:                         HTMLDivElement;     
+    private readonly bootNotificationRequestDiv:                         HTMLDivElement;
     private readonly heartbeatRequestDiv:                                HTMLDivElement;
     private readonly authorizeRequestDiv:                                HTMLDivElement;
     private readonly startTransactionRequestDiv:                         HTMLDivElement;
@@ -35,9 +35,10 @@ class OCPPv1_6 {
     private readonly diagnosticsStatusNotificationRequestDiv:            HTMLDivElement;
     private readonly firmwareStatusNotificationRequestDiv:               HTMLDivElement;
     private readonly rawRequestDiv:                                      HTMLDivElement;
+    private readonly remoteStopTransactionConfDiv:                       HTMLDivElement;
 
     private readonly buttonsDiv:                                         HTMLDivElement;
-    private readonly showBootNotificationRequestButton:                  HTMLButtonElement;     
+    private readonly showBootNotificationRequestButton:                  HTMLButtonElement;
     private readonly showHeartbeatRequestButton:                         HTMLButtonElement;
     private readonly showAuthorizeRequestButton:                         HTMLButtonElement;
     private readonly showStartTransactionRequestButton:                  HTMLButtonElement;
@@ -48,6 +49,7 @@ class OCPPv1_6 {
     private readonly showDiagnosticsStatusNotificationRequestButton:     HTMLButtonElement;
     private readonly showFirmwareStatusNotificationRequestButton:        HTMLButtonElement;
     private readonly showRAWRequestButton:                               HTMLButtonElement;
+    private readonly showRemoteStopTransactionConfButton:                HTMLButtonElement;
 
     private readonly sendBootNotificationRequestButton:                  HTMLButtonElement;
     private readonly sendHeartbeatRequestButton:                         HTMLButtonElement;
@@ -60,6 +62,9 @@ class OCPPv1_6 {
     private readonly sendDiagnosticsStatusNotificationRequestButton:     HTMLButtonElement;
     private readonly sendFirmwareStatusNotificationRequestButton:        HTMLButtonElement;
     private readonly sendRAWRequestButton:                               HTMLButtonElement;
+    private readonly sendRemoteStopTransactionConfButton:                HTMLButtonElement;
+
+    private readonly remoteStopTransactionConfSelectTransactionId:       HTMLSelectElement;
 
     private readonly websocket:                                          WebSocket;
 
@@ -79,17 +84,23 @@ class OCPPv1_6 {
 
         this.websocket.onopen = (e) => {
             this.WriteToScreen("CONNECTED");
-            //this.sendRAWRequest("Grundlegende Vorgaben zur Rechnungsstellung an öffentliche Auftraggeber macht die Richtlinie 2010/45/EU. Sie wird in Bezug auf elektronische Rechnungen ergänzt durch die vom Europäischen Parlament am 11. März 2014 beschlossene Richtlinie 2014/55/EU. Diese gibt den Mitgliedstaaten vor, öffentliche Auftraggeber und Vergabestellen zur Annahme und Verarbeitung elektronischer Rechnungen zu verpflichten. Anschließend wird eine neue europäische Norm für die elektronische Rechnungsstellung in Europa eingeführt: 36 Monate nach Inkrafttreten der Richtlinie soll ein semantisches Datenmodell für die elektronische Rechnungsstellung vorliegen, das die verschiedenen nationalen Standards in Einklang bringt. Nach weiteren 18 Monaten wird die Umsetzung zwingend vorgeschrieben --- Seit dem 1. Juli 2011 sind in Deutschland gemäß Steuervereinfachungsgesetz 2011[5], mit dem die Richtlinie 2010/45/EU[6] umgesetzt wurde, elektronische Rechnungen und klassische Papierrechnungen durch Änderung des § 14 des Umsatzsteuergesetzes gleichgestellt, um Geschäftsprozesse einfacher und effizienter zu machen. Als nationale Umsetzung der Richtlinie 2014/55/EU trat im Mai 2017 der neue § 4a des E-Government-Gesetzes in Kraft, der die Bundesregierung ermächtigt, Vorgaben über die Ausgestaltung elektronischer Rechnungen durch Rechtsverordnung zu erlassen.[7] Davon machte sie mit der E-Rechnungsverordnung (ERechV)[8] Gebrauch, die überwiegend im November 2018 in Kraft (§ 11 ERechV) getreten ist und seit ihrem Inkrafttreten für die Rechnungsstellung an öffentliche Auftraggebern anzuwenden ist. Die Verordnung macht durch einen Verweis auf den kurz zuvor verkündeten[9] Datenaustauschstandard XRechnung detaillierte Vorgaben über die technische Ausgestaltung elektronischer Rechnungen.");
         };
-    
+
         this.websocket.onclose = (e) => {
             this.WriteToScreen("DISCONNECTED");
         };
-    
+
         this.websocket.onmessage = (e) => {
-            this.WriteToScreen("<span>RESPONSE: " + e.data + "</span>");
+          const [ type, id, action, payload ] = JSON.parse(e.data)
+          switch (action){
+            case 'RemoteStopTransaction':
+                this.addTransactionIdToRemoteStopTransactionConfDiv(id, payload.transactionId)
+              break;
+          }
+
+          this.WriteToScreen("<span>RESPONSE: " + e.data + "</span>");
         };
-    
+
         this.websocket.onerror = (e) => {
             this.WriteToScreen("<span class=error>ERROR:</span> " + (e as any).data);
         };
@@ -107,6 +118,7 @@ class OCPPv1_6 {
         this.diagnosticsStatusNotificationRequestDiv                 = this.commandsDiv.querySelector("#DiagnosticsStatusNotificationRequest")  as HTMLDivElement;
         this.firmwareStatusNotificationRequestDiv                    = this.commandsDiv.querySelector("#FirmwareStatusNotificationRequest")     as HTMLDivElement;
         this.rawRequestDiv                                           = this.commandsDiv.querySelector("#RAWRequest")                            as HTMLDivElement;
+        this.remoteStopTransactionConfDiv                            = this.commandsDiv.querySelector("#RemoteStopTransactionConfRequest")         as HTMLDivElement;
 
         this.sendBootNotificationRequestButton                       = this.bootNotificationRequestDiv.             querySelector("#BootNotificationRequestButton")              as HTMLButtonElement;
         this.sendHeartbeatRequestButton                              = this.heartbeatRequestDiv.                    querySelector("#HeartbeatRequestButton")                     as HTMLButtonElement;
@@ -119,6 +131,9 @@ class OCPPv1_6 {
         this.sendDiagnosticsStatusNotificationRequestButton          = this.diagnosticsStatusNotificationRequestDiv.querySelector("#DiagnosticsStatusNotificationRequestButton") as HTMLButtonElement;
         this.sendFirmwareStatusNotificationRequestButton             = this.firmwareStatusNotificationRequestDiv.   querySelector("#FirmwareStatusNotificationRequestButton")    as HTMLButtonElement;
         this.sendRAWRequestButton                                    = this.rawRequestDiv.                          querySelector("#RAWRequestButton")                           as HTMLButtonElement;
+        this.sendRemoteStopTransactionConfButton                           = this.remoteStopTransactionConfDiv.           querySelector("#RemoteStopTransactionConfButton")            as HTMLButtonElement;
+
+        this.remoteStopTransactionConfSelectTransactionId            = this.remoteStopTransactionConfDiv.           querySelector("#RemoteStopTransactionConfSelect_Id")   as HTMLSelectElement;
 
         this.sendBootNotificationRequestButton.onclick               = () => this.SendBootNotificationRequest();
         this.sendHeartbeatRequestButton.onclick                      = () => this.SendHeartbeatRequest();
@@ -131,6 +146,7 @@ class OCPPv1_6 {
         this.sendDiagnosticsStatusNotificationRequestButton.onclick  = () => this.SendDiagnosticsStatusNotificationRequest();
         this.sendFirmwareStatusNotificationRequestButton.onclick     = () => this.SendFirmwareStatusNotificationRequest();
         this.sendRAWRequestButton.onclick                            = () => this.SendRAWRequest();
+        this.sendRemoteStopTransactionConfButton.onclick             = () => this.SendRemoteStopTransactionConf();
 
         this.buttonsDiv                                              = document.querySelector("#buttons")                                               as HTMLDivElement;
         this.showBootNotificationRequestButton                       = this.buttonsDiv.querySelector("#ShowBootNotificationRequestButton")              as HTMLButtonElement;
@@ -144,6 +160,7 @@ class OCPPv1_6 {
         this.showDiagnosticsStatusNotificationRequestButton          = this.buttonsDiv.querySelector("#ShowDiagnosticsStatusNotificationRequestButton") as HTMLButtonElement;
         this.showFirmwareStatusNotificationRequestButton             = this.buttonsDiv.querySelector("#ShowFirmwareStatusNotificationRequestButton")    as HTMLButtonElement;
         this.showRAWRequestButton                                    = this.buttonsDiv.querySelector("#ShowRAWRequestButton")                           as HTMLButtonElement;
+        this.showRemoteStopTransactionConfButton                     = this.buttonsDiv.querySelector("#ShowRemoteStopTransactionConfButton")            as HTMLButtonElement;
 
         this.showBootNotificationRequestButton.onclick               = () => this.showDialog(this.bootNotificationRequestDiv);
         this.showHeartbeatRequestButton.onclick                      = () => this.showDialog(this.heartbeatRequestDiv);
@@ -156,6 +173,7 @@ class OCPPv1_6 {
         this.showDiagnosticsStatusNotificationRequestButton.onclick  = () => this.showDialog(this.diagnosticsStatusNotificationRequestDiv);
         this.showFirmwareStatusNotificationRequestButton.onclick     = () => this.showDialog(this.firmwareStatusNotificationRequestDiv);
         this.showRAWRequestButton.onclick                            = () => this.showDialog(this.rawRequestDiv);
+        this.showRemoteStopTransactionConfButton.onclick             = () => this.showDialog(this.remoteStopTransactionConfDiv);
 
     }
 
@@ -348,10 +366,10 @@ class OCPPv1_6 {
       const Timestamp                  = (properties?.querySelector("#StopTransactionRequest_Timestamp")                                as HTMLInputElement)?.value;
       const MeterStop                  = (properties?.querySelector("#StopTransactionRequest_MeterStop")                                as HTMLInputElement)?.value;
       const Reason                     = (properties?.querySelector("#StopTransactionRequest_Reason")                                   as HTMLSelectElement)?.value;
-      
+
       const Timestamp1                 = (properties?.querySelector("#StopTransactionRequest_TransactionData1_Timestamp")               as HTMLInputElement)?.value;
       //const SampledValues              =  properties.querySelector("#StopTransactionRequest_TransactionData1_SampledValues");
-      
+
       const Value                      = (properties?.querySelector("#StopTransactionRequest_TransactionData1_SampledValue1_Value")     as HTMLSelectElement)?.value;
       const Context                    = (properties?.querySelector("#StopTransactionRequest_TransactionData1_SampledValue1_Context")   as HTMLSelectElement)?.value;
       const Format                     = (properties?.querySelector("#StopTransactionRequest_TransactionData1_SampledValue1_Format")    as HTMLSelectElement)?.value;
@@ -367,7 +385,7 @@ class OCPPv1_6 {
                            "timestamp":        Timestamp     != ""  ? Timestamp               : new Date().toISOString(),
                            "meterStop":        MeterStop     != ""  ? parseInt(MeterStop)     : null,
                            "reason":           Reason        != "-" ? Reason                  : null,
-                           "meterValue":       [
+                           "transactionData":       [
                                {
                                    "timestamp":    Timestamp1 != "" ? Timestamp1 : new Date().toISOString(),
                                    "sampledValue": [
@@ -444,4 +462,31 @@ class OCPPv1_6 {
 
     }
 
+    public SendRemoteStopTransactionConf(RequestDivElement?: HTMLDivElement)
+    {
+      const RemoteStopTransactionConfRequestDiv  = RequestDivElement ?? document.querySelector("#RemoteStopTransactionConfRequest");
+      const properties                           = RemoteStopTransactionConfRequestDiv?.querySelector(".properties")      as HTMLDivElement;
+      const id                                   = (properties?.querySelector("#RemoteStopTransactionConfSelect_Id") as HTMLSelectElement)?.value;
+      const status                               = (properties?.querySelector("#RemoteStopTransactionConfSelect_Status") as HTMLSelectElement)?.value;
+
+      let data = JSON.stringify([3, id,{status: status}]);
+      this.websocket.send(data)
+
+      let value = this.remoteStopTransactionConfSelectTransactionId.selectedIndex
+      this.remoteStopTransactionConfSelectTransactionId.removeChild(this.remoteStopTransactionConfSelectTransactionId[value])
+
+      if (this.remoteStopTransactionConfSelectTransactionId.length === 0){
+        this.sendRemoteStopTransactionConfButton.disabled = true;
+      }
+    }
+
+    public addTransactionIdToRemoteStopTransactionConfDiv(id: string, transactionId: string): void
+    {
+      let option = document.createElement('option');
+      option.value = id;
+      option.text = transactionId;
+      this.remoteStopTransactionConfSelectTransactionId.add(option)
+
+      this.sendRemoteStopTransactionConfButton.disabled = false;
+    }
 }

@@ -8,3 +8,4 @@ src/css/*.css.map
 src/ts/*.js
 src/ts/*.js.map
 .DS_Store
+.idea
