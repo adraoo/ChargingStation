@@ -20,8 +20,7 @@
       "noImplicitReturns":                true,
       "noFallthroughCasesInSwitch":       true
     },
-    "exclude": [ "node_modules" ],
     "files": [
-        "src/ts/chargingStationApp.ts"
+      "ts/chargingStationApp.ts"
     ]
   }
