@@ -48,7 +48,8 @@
                 <button id="ShowFirmwareStatusNotificationRequestButton">Firmware Status Notification</button>
 
                 <button id="ShowRAWRequestButton">RAW Request</button>
-                <button id="ShowRemoteStopTransactionConfButton">RemoteStopTransactionConf</button>
+                <button id="ShowRemoteStopTransactionConfirmationButton">RemoteStopTransaction Confirmation</button>
+                <button id="ShowReserveNowConfirmationButton">ReserveNow Confirmation</button>
 
             </div>
 
@@ -222,140 +223,131 @@
                             <div class="value"><input id="MeterValuesRequest_TransactionId" type="text"></div>
                         </div>
 
-                        <div id="MeterValuesRequest_MeterValues" class="collection">
-                            <div id="MeterValuesRequest_MeterValue1" class="properties">
 
-                                <div class="row">
-                                    <div class="key">Timestamp</div>
-                                    <div class="value"><input id="MeterValuesRequest_MeterValue1_Timestamp" type="text">
-                                    </div>
-                                </div>
+                        <div class="row">
+                            <div class="key">Timestamp</div>
+                            <div class="value"><input id="MeterValuesRequest_MeterValue1_Timestamp" type="text">
+                            </div>
+                        </div>
 
-                                <div class="row">
-                                    <div class="key">Sampled Values</div>
-                                </div>
-                                <div id="MeterValuesRequest_MeterValue1_SampledValues" class="collection">
-                                    <div id="MeterValuesRequest_MeterValue1_SampledValue1" class="properties">
-                                        <div class="row">
-                                            <div class="key">Value</div>
-                                            <div class="value"><input
-                                                    id="MeterValuesRequest_MeterValue1_SampledValue1_Value" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Context</div>
-                                            <div class="value">
-                                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Context">
-                                                    <option>-</option>
-                                                    <option>Interruption.Begin</option>
-                                                    <option>Interruption.End</option>
-                                                    <option>Sample.Clock</option>
-                                                    <option>Sample.Periodic</option>
-                                                    <option>Transaction.Begin</option>
-                                                    <option>Transaction.End</option>
-                                                    <option>Trigger</option>
-                                                    <option>Other</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Format</div>
-                                            <div class="value">
-                                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Format">
-                                                    <option>-</option>
-                                                    <option>Raw</option>
-                                                    <option>SignedData</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Measurand</div>
-                                            <div class="value">
-                                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Measurand">
-                                                    <option>-</option>
-                                                    <option>Energy.Active.Export.Register</option>
-                                                    <option>Energy.Active.Import.Register</option>
-                                                    <option>Energy.Reactive.Export.Register</option>
-                                                    <option>Energy.Reactive.Import.Register</option>
-                                                    <option>Energy.Active.Export.Interval</option>
-                                                    <option>Energy.Active.Import.Interval</option>
-                                                    <option>Energy.Reactive.Export.Interval</option>
-                                                    <option>Energy.Reactive.Import.Interval</option>
-                                                    <option>Power.Active.Export</option>
-                                                    <option>Power.Active.Import</option>
-                                                    <option>Power.Offered</option>
-                                                    <option>Power.Reactive.Export</option>
-                                                    <option>Power.Reactive.Import</option>
-                                                    <option>Power.Factor</option>
-                                                    <option>Current.Import</option>
-                                                    <option>Current.Export</option>
-                                                    <option>Current.Offered</option>
-                                                    <option>Voltage</option>
-                                                    <option>Frequency</option>
-                                                    <option>Temperature</option>
-                                                    <option>SoC</option>
-                                                    <option>RPM</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Phase</div>
-                                            <div class="value">
-                                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Phase">
-                                                    <option>-</option>
-                                                    <option>L1</option>
-                                                    <option>L2</option>
-                                                    <option>L3</option>
-                                                    <option>N</option>
-                                                    <option>L1-N</option>
-                                                    <option>L2-N</option>
-                                                    <option>L3-N</option>
-                                                    <option>L1-L2</option>
-                                                    <option>L2-L3</option>
-                                                    <option>L3-L1</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Location</div>
-                                            <div class="value">
-                                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Location">
-                                                    <option>-</option>
-                                                    <option>Cable</option>
-                                                    <option>EV</option>
-                                                    <option>Inlet</option>
-                                                    <option>Outlet</option>
-                                                    <option>Body</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Unit</div>
-                                            <div class="value">
-                                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Unit">
-                                                    <option>-</option>
-                                                    <option>Wh</option>
-                                                    <option>kWh</option>
-                                                    <option>varh</option>
-                                                    <option>kvarh</option>
-                                                    <option>W</option>
-                                                    <option>kW</option>
-                                                    <option>VA</option>
-                                                    <option>kVA</option>
-                                                    <option>var</option>
-                                                    <option>kvar</option>
-                                                    <option>A</option>
-                                                    <option>V</option>
-                                                    <option>K</option>
-                                                    <option>Celsius</option>
-                                                    <option>Fahrenheit</option>
-                                                    <option>Percent</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                        <div class="row">
+                            <div class="key" style="padding-left: 10px"><u>Sampled Values</u></div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 10px">Value</div>
+                            <div class="value"><input
+                                    id="MeterValuesRequest_MeterValue1_SampledValue1_Value" type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 10px">Context</div>
+                            <div class="value">
+                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Context">
+                                    <option>-</option>
+                                    <option>Interruption.Begin</option>
+                                    <option>Interruption.End</option>
+                                    <option>Sample.Clock</option>
+                                    <option>Sample.Periodic</option>
+                                    <option>Transaction.Begin</option>
+                                    <option>Transaction.End</option>
+                                    <option>Trigger</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 10px">Format</div>
+                            <div class="value">
+                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Format">
+                                    <option>-</option>
+                                    <option>Raw</option>
+                                    <option>SignedData</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 10px">Measurand</div>
+                            <div class="value">
+                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Measurand">
+                                    <option>-</option>
+                                    <option>Energy.Active.Export.Register</option>
+                                    <option>Energy.Active.Import.Register</option>
+                                    <option>Energy.Reactive.Export.Register</option>
+                                    <option>Energy.Reactive.Import.Register</option>
+                                    <option>Energy.Active.Export.Interval</option>
+                                    <option>Energy.Active.Import.Interval</option>
+                                    <option>Energy.Reactive.Export.Interval</option>
+                                    <option>Energy.Reactive.Import.Interval</option>
+                                    <option>Power.Active.Export</option>
+                                    <option>Power.Active.Import</option>
+                                    <option>Power.Offered</option>
+                                    <option>Power.Reactive.Export</option>
+                                    <option>Power.Reactive.Import</option>
+                                    <option>Power.Factor</option>
+                                    <option>Current.Import</option>
+                                    <option>Current.Export</option>
+                                    <option>Current.Offered</option>
+                                    <option>Voltage</option>
+                                    <option>Frequency</option>
+                                    <option>Temperature</option>
+                                    <option>SoC</option>
+                                    <option>RPM</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 10px">Phase</div>
+                            <div class="value">
+                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Phase">
+                                    <option>-</option>
+                                    <option>L1</option>
+                                    <option>L2</option>
+                                    <option>L3</option>
+                                    <option>N</option>
+                                    <option>L1-N</option>
+                                    <option>L2-N</option>
+                                    <option>L3-N</option>
+                                    <option>L1-L2</option>
+                                    <option>L2-L3</option>
+                                    <option>L3-L1</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 10px">Location</div>
+                            <div class="value">
+                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Location">
+                                    <option>-</option>
+                                    <option>Cable</option>
+                                    <option>EV</option>
+                                    <option>Inlet</option>
+                                    <option>Outlet</option>
+                                    <option>Body</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 10px">Unit</div>
+                            <div class="value">
+                                <select id="MeterValuesRequest_MeterValue1_SampledValue1_Unit">
+                                    <option>-</option>
+                                    <option>Wh</option>
+                                    <option>kWh</option>
+                                    <option>varh</option>
+                                    <option>kvarh</option>
+                                    <option>W</option>
+                                    <option>kW</option>
+                                    <option>VA</option>
+                                    <option>kVA</option>
+                                    <option>var</option>
+                                    <option>kvar</option>
+                                    <option>A</option>
+                                    <option>V</option>
+                                    <option>K</option>
+                                    <option>Celsius</option>
+                                    <option>Fahrenheit</option>
+                                    <option>Percent</option>
+                                </select>
                             </div>
                         </div>
 
@@ -404,145 +396,134 @@
                         </div>
 
                         <div class="row">
-                            <div class="key">Transaction Data</div>
+                            <div class="key" style="padding-left: 10px"><u>Transaction Data</u></div>
                         </div>
-                        <div id="StopTransactionRequest_TransactionData" class="collection">
-                            <div id="StopTransactionRequest_TransactionData1" class="properties">
+                        <div class="row">
+                            <div class="key" style="padding-left: 10px">Timestamp</div>
+                            <div class="value"><input id="StopTransactionRequest_TransactionData1_Timestamp"
+                                                      type="text"></div>
+                        </div>
 
-                                <div class="row">
-                                    <div class="key">Timestamp</div>
-                                    <div class="value"><input id="StopTransactionRequest_TransactionData1_Timestamp"
-                                                              type="text"></div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="key">Sampled Value</div>
-                                </div>
-                                <div id="StopTransactionRequest_TransactionData1_SampledValues" class="collection">
-                                    <div id="StopTransactionRequest_TransactionData1_SampledValue1" class="properties">
-                                        <div class="row">
-                                            <div class="key">Value</div>
-                                            <div class="value"><input
-                                                    id="StopTransactionRequest_TransactionData1_SampledValue1_Value"
-                                                    type="text"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Context</div>
-                                            <div class="value">
-                                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Context">
-                                                    <option>-</option>
-                                                    <option>Interruption.Begin</option>
-                                                    <option>Interruption.End</option>
-                                                    <option>Sample.Clock</option>
-                                                    <option>Sample.Periodic</option>
-                                                    <option>Transaction.Begin</option>
-                                                    <option>Transaction.End</option>
-                                                    <option>Trigger</option>
-                                                    <option>Other</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Format</div>
-                                            <div class="value">
-                                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Format">
-                                                    <option>-</option>
-                                                    <option>Raw</option>
-                                                    <option>SignedData</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Measurand</div>
-                                            <div class="value">
-                                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Measurand">
-                                                    <option>-</option>
-                                                    <option>Energy.Active.Export.Register</option>
-                                                    <option>Energy.Active.Import.Register</option>
-                                                    <option>Energy.Reactive.Export.Register</option>
-                                                    <option>Energy.Reactive.Import.Register</option>
-                                                    <option>Energy.Active.Export.Interval</option>
-                                                    <option>Energy.Active.Import.Interval</option>
-                                                    <option>Energy.Reactive.Export.Interval</option>
-                                                    <option>Energy.Reactive.Import.Interval</option>
-                                                    <option>Power.Active.Export</option>
-                                                    <option>Power.Active.Import</option>
-                                                    <option>Power.Offered</option>
-                                                    <option>Power.Reactive.Export</option>
-                                                    <option>Power.Reactive.Import</option>
-                                                    <option>Power.Factor</option>
-                                                    <option>Current.Import</option>
-                                                    <option>Current.Export</option>
-                                                    <option>Current.Offered</option>
-                                                    <option>Voltage</option>
-                                                    <option>Frequency</option>
-                                                    <option>Temperature</option>
-                                                    <option>SoC</option>
-                                                    <option>RPM</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Phase</div>
-                                            <div class="value">
-                                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Phase">
-                                                    <option>-</option>
-                                                    <option>L1</option>
-                                                    <option>L2</option>
-                                                    <option>L3</option>
-                                                    <option>N</option>
-                                                    <option>L1-N</option>
-                                                    <option>L2-N</option>
-                                                    <option>L3-N</option>
-                                                    <option>L1-L2</option>
-                                                    <option>L2-L3</option>
-                                                    <option>L3-L1</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Location</div>
-                                            <div class="value">
-                                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Location">
-                                                    <option>-</option>
-                                                    <option>Cable</option>
-                                                    <option>EV</option>
-                                                    <option>Inlet</option>
-                                                    <option>Outlet</option>
-                                                    <option>Body</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="key">Unit</div>
-                                            <div class="value">
-                                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Unit">
-                                                    <option>-</option>
-                                                    <option>Wh</option>
-                                                    <option>kWh</option>
-                                                    <option>varh</option>
-                                                    <option>kvarh</option>
-                                                    <option>W</option>
-                                                    <option>kW</option>
-                                                    <option>VA</option>
-                                                    <option>kVA</option>
-                                                    <option>var</option>
-                                                    <option>kvar</option>
-                                                    <option>A</option>
-                                                    <option>V</option>
-                                                    <option>K</option>
-                                                    <option>Celsius</option>
-                                                    <option>Fahrenheit</option>
-                                                    <option>Percent</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                        <div class="row">
+                            <div class="key" style="padding-left: 20px" ><u>Sampled Value</u></div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 20px">Value</div>
+                            <div class="value"><input
+                                    id="StopTransactionRequest_TransactionData1_SampledValue1_Value"
+                                    type="text"></div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 20px">Context</div>
+                            <div class="value">
+                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Context">
+                                    <option>-</option>
+                                    <option>Interruption.Begin</option>
+                                    <option>Interruption.End</option>
+                                    <option>Sample.Clock</option>
+                                    <option>Sample.Periodic</option>
+                                    <option>Transaction.Begin</option>
+                                    <option>Transaction.End</option>
+                                    <option>Trigger</option>
+                                    <option>Other</option>
+                                </select>
                             </div>
                         </div>
-
+                        <div class="row">
+                            <div class="key" style="padding-left: 20px">Format</div>
+                            <div class="value">
+                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Format">
+                                    <option>-</option>
+                                    <option>Raw</option>
+                                    <option>SignedData</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 20px">Measurand</div>
+                            <div class="value">
+                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Measurand">
+                                    <option>-</option>
+                                    <option>Energy.Active.Export.Register</option>
+                                    <option>Energy.Active.Import.Register</option>
+                                    <option>Energy.Reactive.Export.Register</option>
+                                    <option>Energy.Reactive.Import.Register</option>
+                                    <option>Energy.Active.Export.Interval</option>
+                                    <option>Energy.Active.Import.Interval</option>
+                                    <option>Energy.Reactive.Export.Interval</option>
+                                    <option>Energy.Reactive.Import.Interval</option>
+                                    <option>Power.Active.Export</option>
+                                    <option>Power.Active.Import</option>
+                                    <option>Power.Offered</option>
+                                    <option>Power.Reactive.Export</option>
+                                    <option>Power.Reactive.Import</option>
+                                    <option>Power.Factor</option>
+                                    <option>Current.Import</option>
+                                    <option>Current.Export</option>
+                                    <option>Current.Offered</option>
+                                    <option>Voltage</option>
+                                    <option>Frequency</option>
+                                    <option>Temperature</option>
+                                    <option>SoC</option>
+                                    <option>RPM</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 20px">Phase</div>
+                            <div class="value">
+                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Phase">
+                                    <option>-</option>
+                                    <option>L1</option>
+                                    <option>L2</option>
+                                    <option>L3</option>
+                                    <option>N</option>
+                                    <option>L1-N</option>
+                                    <option>L2-N</option>
+                                    <option>L3-N</option>
+                                    <option>L1-L2</option>
+                                    <option>L2-L3</option>
+                                    <option>L3-L1</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 20px">Location</div>
+                            <div class="value">
+                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Location">
+                                    <option>-</option>
+                                    <option>Cable</option>
+                                    <option>EV</option>
+                                    <option>Inlet</option>
+                                    <option>Outlet</option>
+                                    <option>Body</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key" style="padding-left: 20px">Unit</div>
+                            <div class="value">
+                                <select id="StopTransactionRequest_TransactionData1_SampledValue1_Unit">
+                                    <option>-</option>
+                                    <option>Wh</option>
+                                    <option>kWh</option>
+                                    <option>varh</option>
+                                    <option>kvarh</option>
+                                    <option>W</option>
+                                    <option>kW</option>
+                                    <option>VA</option>
+                                    <option>kVA</option>
+                                    <option>var</option>
+                                    <option>kvar</option>
+                                    <option>A</option>
+                                    <option>V</option>
+                                    <option>K</option>
+                                    <option>Celsius</option>
+                                    <option>Fahrenheit</option>
+                                    <option>Percent</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <button id="StopTransactionRequestButton" class="commandButton">send</button>
                 </div>
@@ -619,26 +600,54 @@
                     <button id="RAWRequestButton" class="commandButton">send</button>
                 </div>
 
-                <div id="RemoteStopTransactionConfRequest" class="command">
+                <div id="RemoteStopTransactionConfirmationRequest" class="command">
                     <div class="description">RemoteStopTransaction.conf</div>
                     <div class="properties">
                         <div class="row">
                             <div class="key">Transaction id</div>
                             <div class="value">
-                                <select id="RemoteStopTransactionConfSelect_Id">
+                                <select id="RemoteStopTransactionConfirmationSelect_Id">
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="key">Status</div>
                             <div class="value">
-                                <select id="RemoteStopTransactionConfSelect_Status">
+                                <select id="RemoteStopTransactionConfirmationSelect_Status">
                                     <option>Accepted</option>
                                     <option>Rejected</option>
                                 </select>
                             </div>
                         </div>
-                        <button id="RemoteStopTransactionConfButton" class="commandButton" disabled>send</button>
+                        <button id="RemoteStopTransactionConfirmationButton" class="commandButton" disabled>send
+                        </button>
+                    </div>
+
+                </div>
+
+                <div id="ReserveNowConfirmationRequest" class="command">
+                    <div class="description">ReserveNow.conf</div>
+                    <div class="properties">
+                        <div class="row">
+                            <div class="key">Reservation Id</div>
+                            <div class="value">
+                                <select id="ReserveNowConfirmationSelect_Id">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key">Status</div>
+                            <div class="value">
+                                <select id="ReserveNowConfirmationSelect_Status">
+                                    <option>Accepted</option>
+                                    <option>Faulted</option>
+                                    <option>Occupied</option>
+                                    <option>Rejected</option>
+                                    <option>Unavailable</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="ReserveNowConfirmationButton" class="commandButton" disabled>send</button>
                     </div>
 
                 </div>

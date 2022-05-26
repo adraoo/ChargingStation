@@ -35,7 +35,8 @@ class OCPPv1_6 {
     private readonly diagnosticsStatusNotificationRequestDiv:            HTMLDivElement;
     private readonly firmwareStatusNotificationRequestDiv:               HTMLDivElement;
     private readonly rawRequestDiv:                                      HTMLDivElement;
-    private readonly remoteStopTransactionConfDiv:                       HTMLDivElement;
+    private readonly remoteStopTransactionConfirmationDiv:               HTMLDivElement;
+    private readonly reserveNowConfirmationDiv:                          HTMLDivElement;
 
     private readonly buttonsDiv:                                         HTMLDivElement;
     private readonly showBootNotificationRequestButton:                  HTMLButtonElement;
@@ -49,7 +50,8 @@ class OCPPv1_6 {
     private readonly showDiagnosticsStatusNotificationRequestButton:     HTMLButtonElement;
     private readonly showFirmwareStatusNotificationRequestButton:        HTMLButtonElement;
     private readonly showRAWRequestButton:                               HTMLButtonElement;
-    private readonly showRemoteStopTransactionConfButton:                HTMLButtonElement;
+    private readonly showRemoteStopTransactionConfirmationButton:        HTMLButtonElement;
+    private readonly showReserveNowConfirmationButton:                   HTMLButtonElement;
 
     private readonly sendBootNotificationRequestButton:                  HTMLButtonElement;
     private readonly sendHeartbeatRequestButton:                         HTMLButtonElement;
@@ -62,9 +64,11 @@ class OCPPv1_6 {
     private readonly sendDiagnosticsStatusNotificationRequestButton:     HTMLButtonElement;
     private readonly sendFirmwareStatusNotificationRequestButton:        HTMLButtonElement;
     private readonly sendRAWRequestButton:                               HTMLButtonElement;
-    private readonly sendRemoteStopTransactionConfButton:                HTMLButtonElement;
+    private readonly sendRemoteStopTransactionConfirmationButton:        HTMLButtonElement;
+    private readonly sendReserveNowConfirmationButton:                   HTMLButtonElement;
 
-    private readonly remoteStopTransactionConfSelectTransactionId:       HTMLSelectElement;
+    private readonly remoteStopTransactionConfirmationSelectTransactionId:       HTMLSelectElement;
+    private readonly reserveNowConfirmationSelectReservationId:                  HTMLSelectElement;
 
     private readonly websocket:                                          WebSocket;
 
@@ -80,7 +84,7 @@ class OCPPv1_6 {
 
         this.WriteToScreen = WriteToScreen;
 
-        this.websocket  = new WebSocket("ws://164.90.164.22:8180/steve/websocket/CentralSystemService/CP-00001", "ocpp1.6");
+        this.websocket  = new WebSocket("ws://164.90.164.22:8180/steve/websocket/CentralSystemService/CP-00002", "ocpp1.6");
 
         this.websocket.onopen = (e) => {
             this.WriteToScreen("CONNECTED");
@@ -92,9 +96,13 @@ class OCPPv1_6 {
 
         this.websocket.onmessage = (e) => {
           const [ type, id, action, payload ] = JSON.parse(e.data)
+          console.log( type, id, action, payload);
           switch (action){
             case 'RemoteStopTransaction':
-                this.addTransactionIdToRemoteStopTransactionConfDiv(id, payload.transactionId)
+                this.addTransactionIdToRemoteStopTransactionConfirmationDiv(id, payload.transactionId)
+              break;
+            case 'ReserveNow':
+                this.addReservationIdToReserveNowConfirmationDiv(id, payload.reservationId)
               break;
           }
 
@@ -106,34 +114,37 @@ class OCPPv1_6 {
         };
 
 
-        this.commandsDiv                                             = document.querySelector("#commands")                                      as HTMLDivElement;
-        this.bootNotificationRequestDiv                              = this.commandsDiv.querySelector("#BootNotificationRequest")               as HTMLDivElement;
-        this.heartbeatRequestDiv                                     = this.commandsDiv.querySelector("#HeartbeatRequest")                      as HTMLDivElement;
-        this.authorizeRequestDiv                                     = this.commandsDiv.querySelector("#AuthorizeRequest")                      as HTMLDivElement;
-        this.startTransactionRequestDiv                              = this.commandsDiv.querySelector("#StartTransactionRequest")               as HTMLDivElement;
-        this.statusNotificationRequestDiv                            = this.commandsDiv.querySelector("#StatusNotificationRequest")             as HTMLDivElement;
-        this.meterValuesRequestDiv                                   = this.commandsDiv.querySelector("#MeterValuesRequest")                    as HTMLDivElement;
-        this.stopTransactionRequestDiv                               = this.commandsDiv.querySelector("#StopTransactionRequest")                as HTMLDivElement;
-        this.dataTransferRequestDiv                                  = this.commandsDiv.querySelector("#DataTransferRequest")                   as HTMLDivElement;
-        this.diagnosticsStatusNotificationRequestDiv                 = this.commandsDiv.querySelector("#DiagnosticsStatusNotificationRequest")  as HTMLDivElement;
-        this.firmwareStatusNotificationRequestDiv                    = this.commandsDiv.querySelector("#FirmwareStatusNotificationRequest")     as HTMLDivElement;
-        this.rawRequestDiv                                           = this.commandsDiv.querySelector("#RAWRequest")                            as HTMLDivElement;
-        this.remoteStopTransactionConfDiv                            = this.commandsDiv.querySelector("#RemoteStopTransactionConfRequest")         as HTMLDivElement;
+        this.commandsDiv                                             = document.querySelector("#commands")                                            as HTMLDivElement;
+        this.bootNotificationRequestDiv                              = this.commandsDiv.querySelector("#BootNotificationRequest")                     as HTMLDivElement;
+        this.heartbeatRequestDiv                                     = this.commandsDiv.querySelector("#HeartbeatRequest")                            as HTMLDivElement;
+        this.authorizeRequestDiv                                     = this.commandsDiv.querySelector("#AuthorizeRequest")                            as HTMLDivElement;
+        this.startTransactionRequestDiv                              = this.commandsDiv.querySelector("#StartTransactionRequest")                     as HTMLDivElement;
+        this.statusNotificationRequestDiv                            = this.commandsDiv.querySelector("#StatusNotificationRequest")                   as HTMLDivElement;
+        this.meterValuesRequestDiv                                   = this.commandsDiv.querySelector("#MeterValuesRequest")                          as HTMLDivElement;
+        this.stopTransactionRequestDiv                               = this.commandsDiv.querySelector("#StopTransactionRequest")                      as HTMLDivElement;
+        this.dataTransferRequestDiv                                  = this.commandsDiv.querySelector("#DataTransferRequest")                         as HTMLDivElement;
+        this.diagnosticsStatusNotificationRequestDiv                 = this.commandsDiv.querySelector("#DiagnosticsStatusNotificationRequest")        as HTMLDivElement;
+        this.firmwareStatusNotificationRequestDiv                    = this.commandsDiv.querySelector("#FirmwareStatusNotificationRequest")           as HTMLDivElement;
+        this.rawRequestDiv                                           = this.commandsDiv.querySelector("#RAWRequest")                                  as HTMLDivElement;
+        this.remoteStopTransactionConfirmationDiv                    = this.commandsDiv.querySelector("#RemoteStopTransactionConfirmationRequest")    as HTMLDivElement;
+        this.reserveNowConfirmationDiv                               = this.commandsDiv.querySelector("#ReserveNowConfirmationRequest")               as HTMLDivElement;
 
-        this.sendBootNotificationRequestButton                       = this.bootNotificationRequestDiv.             querySelector("#BootNotificationRequestButton")              as HTMLButtonElement;
-        this.sendHeartbeatRequestButton                              = this.heartbeatRequestDiv.                    querySelector("#HeartbeatRequestButton")                     as HTMLButtonElement;
-        this.sendAuthorizeRequestButton                              = this.authorizeRequestDiv.                    querySelector("#AuthorizeRequestButton")                     as HTMLButtonElement;
-        this.sendStartTransactionRequestButton                       = this.startTransactionRequestDiv.             querySelector("#StartTransactionRequestButton")              as HTMLButtonElement;
-        this.sendStatusNotificationRequestButton                     = this.statusNotificationRequestDiv.           querySelector("#StatusNotificationRequestButton")            as HTMLButtonElement;
-        this.sendMeterValuesRequestButton                            = this.meterValuesRequestDiv.                  querySelector("#MeterValuesRequestButton")                   as HTMLButtonElement;
-        this.sendStopTransactionRequestButton                        = this.stopTransactionRequestDiv.              querySelector("#StopTransactionRequestButton")               as HTMLButtonElement;
-        this.sendDataTransferRequestButton                           = this.dataTransferRequestDiv.                 querySelector("#DataTransferRequestButton")                  as HTMLButtonElement;
-        this.sendDiagnosticsStatusNotificationRequestButton          = this.diagnosticsStatusNotificationRequestDiv.querySelector("#DiagnosticsStatusNotificationRequestButton") as HTMLButtonElement;
-        this.sendFirmwareStatusNotificationRequestButton             = this.firmwareStatusNotificationRequestDiv.   querySelector("#FirmwareStatusNotificationRequestButton")    as HTMLButtonElement;
-        this.sendRAWRequestButton                                    = this.rawRequestDiv.                          querySelector("#RAWRequestButton")                           as HTMLButtonElement;
-        this.sendRemoteStopTransactionConfButton                           = this.remoteStopTransactionConfDiv.           querySelector("#RemoteStopTransactionConfButton")            as HTMLButtonElement;
+        this.sendBootNotificationRequestButton                       = this.bootNotificationRequestDiv.             querySelector("#BootNotificationRequestButton")                   as HTMLButtonElement;
+        this.sendHeartbeatRequestButton                              = this.heartbeatRequestDiv.                    querySelector("#HeartbeatRequestButton")                          as HTMLButtonElement;
+        this.sendAuthorizeRequestButton                              = this.authorizeRequestDiv.                    querySelector("#AuthorizeRequestButton")                          as HTMLButtonElement;
+        this.sendStartTransactionRequestButton                       = this.startTransactionRequestDiv.             querySelector("#StartTransactionRequestButton")                   as HTMLButtonElement;
+        this.sendStatusNotificationRequestButton                     = this.statusNotificationRequestDiv.           querySelector("#StatusNotificationRequestButton")                 as HTMLButtonElement;
+        this.sendMeterValuesRequestButton                            = this.meterValuesRequestDiv.                  querySelector("#MeterValuesRequestButton")                        as HTMLButtonElement;
+        this.sendStopTransactionRequestButton                        = this.stopTransactionRequestDiv.              querySelector("#StopTransactionRequestButton")                    as HTMLButtonElement;
+        this.sendDataTransferRequestButton                           = this.dataTransferRequestDiv.                 querySelector("#DataTransferRequestButton")                       as HTMLButtonElement;
+        this.sendDiagnosticsStatusNotificationRequestButton          = this.diagnosticsStatusNotificationRequestDiv.querySelector("#DiagnosticsStatusNotificationRequestButton")      as HTMLButtonElement;
+        this.sendFirmwareStatusNotificationRequestButton             = this.firmwareStatusNotificationRequestDiv.   querySelector("#FirmwareStatusNotificationRequestButton")         as HTMLButtonElement;
+        this.sendRAWRequestButton                                    = this.rawRequestDiv.                          querySelector("#RAWRequestButton")                                as HTMLButtonElement;
+        this.sendRemoteStopTransactionConfirmationButton             = this.remoteStopTransactionConfirmationDiv.   querySelector("#RemoteStopTransactionConfirmationButton")         as HTMLButtonElement;
+        this.sendReserveNowConfirmationButton                        = this.reserveNowConfirmationDiv.              querySelector("#ReserveNowConfirmationButton")                    as HTMLButtonElement;
 
-        this.remoteStopTransactionConfSelectTransactionId            = this.remoteStopTransactionConfDiv.           querySelector("#RemoteStopTransactionConfSelect_Id")   as HTMLSelectElement;
+        this.remoteStopTransactionConfirmationSelectTransactionId    = this.remoteStopTransactionConfirmationDiv.   querySelector("#RemoteStopTransactionConfirmationSelect_Id")      as HTMLSelectElement;
+        this.reserveNowConfirmationSelectReservationId               = this.reserveNowConfirmationDiv.              querySelector("#ReserveNowConfirmationSelect_Id")                 as HTMLSelectElement;
 
         this.sendBootNotificationRequestButton.onclick               = () => this.SendBootNotificationRequest();
         this.sendHeartbeatRequestButton.onclick                      = () => this.SendHeartbeatRequest();
@@ -146,7 +157,8 @@ class OCPPv1_6 {
         this.sendDiagnosticsStatusNotificationRequestButton.onclick  = () => this.SendDiagnosticsStatusNotificationRequest();
         this.sendFirmwareStatusNotificationRequestButton.onclick     = () => this.SendFirmwareStatusNotificationRequest();
         this.sendRAWRequestButton.onclick                            = () => this.SendRAWRequest();
-        this.sendRemoteStopTransactionConfButton.onclick             = () => this.SendRemoteStopTransactionConf();
+        this.sendRemoteStopTransactionConfirmationButton.onclick     = () => this.SendRemoteStopTransactionConfirmation();
+        this.sendReserveNowConfirmationButton.onclick                = () => this.SendReserveNowConfirmation();
 
         this.buttonsDiv                                              = document.querySelector("#buttons")                                               as HTMLDivElement;
         this.showBootNotificationRequestButton                       = this.buttonsDiv.querySelector("#ShowBootNotificationRequestButton")              as HTMLButtonElement;
@@ -160,7 +172,8 @@ class OCPPv1_6 {
         this.showDiagnosticsStatusNotificationRequestButton          = this.buttonsDiv.querySelector("#ShowDiagnosticsStatusNotificationRequestButton") as HTMLButtonElement;
         this.showFirmwareStatusNotificationRequestButton             = this.buttonsDiv.querySelector("#ShowFirmwareStatusNotificationRequestButton")    as HTMLButtonElement;
         this.showRAWRequestButton                                    = this.buttonsDiv.querySelector("#ShowRAWRequestButton")                           as HTMLButtonElement;
-        this.showRemoteStopTransactionConfButton                     = this.buttonsDiv.querySelector("#ShowRemoteStopTransactionConfButton")            as HTMLButtonElement;
+        this.showRemoteStopTransactionConfirmationButton             = this.buttonsDiv.querySelector("#ShowRemoteStopTransactionConfirmationButton")    as HTMLButtonElement;
+        this.showReserveNowConfirmationButton                        = this.buttonsDiv.querySelector("#ShowReserveNowConfirmationButton")               as HTMLButtonElement;
 
         this.showBootNotificationRequestButton.onclick               = () => this.showDialog(this.bootNotificationRequestDiv);
         this.showHeartbeatRequestButton.onclick                      = () => this.showDialog(this.heartbeatRequestDiv);
@@ -173,7 +186,8 @@ class OCPPv1_6 {
         this.showDiagnosticsStatusNotificationRequestButton.onclick  = () => this.showDialog(this.diagnosticsStatusNotificationRequestDiv);
         this.showFirmwareStatusNotificationRequestButton.onclick     = () => this.showDialog(this.firmwareStatusNotificationRequestDiv);
         this.showRAWRequestButton.onclick                            = () => this.showDialog(this.rawRequestDiv);
-        this.showRemoteStopTransactionConfButton.onclick             = () => this.showDialog(this.remoteStopTransactionConfDiv);
+        this.showRemoteStopTransactionConfirmationButton.onclick     = () => this.showDialog(this.remoteStopTransactionConfirmationDiv);
+        this.showReserveNowConfirmationButton.onclick                = () => this.showDialog(this.reserveNowConfirmationDiv);
 
     }
 
@@ -210,6 +224,13 @@ class OCPPv1_6 {
                                        command,
                                        request != null ? request : {} ]);
 
+        this.WriteToScreen("SENT: " + message);
+        this.websocket.send(message);
+
+    }
+
+    public sendConfirmation(id: string, payload: any) {
+        const message = JSON.stringify([ 3, id, payload]);
         this.WriteToScreen("SENT: " + message);
         this.websocket.send(message);
 
@@ -462,31 +483,56 @@ class OCPPv1_6 {
 
     }
 
-    public SendRemoteStopTransactionConf(RequestDivElement?: HTMLDivElement)
+    public SendRemoteStopTransactionConfirmation(RequestDivElement?: HTMLDivElement)
     {
-      const RemoteStopTransactionConfRequestDiv  = RequestDivElement ?? document.querySelector("#RemoteStopTransactionConfRequest");
-      const properties                           = RemoteStopTransactionConfRequestDiv?.querySelector(".properties")      as HTMLDivElement;
-      const id                                   = (properties?.querySelector("#RemoteStopTransactionConfSelect_Id") as HTMLSelectElement)?.value;
-      const status                               = (properties?.querySelector("#RemoteStopTransactionConfSelect_Status") as HTMLSelectElement)?.value;
+      const RemoteStopTransactionConfirmationRequestDiv  = RequestDivElement ?? document.querySelector("#RemoteStopTransactionConfirmationRequest");
+      const properties                           = RemoteStopTransactionConfirmationRequestDiv?.querySelector(".properties")      as HTMLDivElement;
+      const id                                   = (properties?.querySelector("#RemoteStopTransactionConfirmationSelect_Id") as HTMLSelectElement)?.value;
+      const status                               = (properties?.querySelector("#RemoteStopTransactionConfirmationSelect_Status") as HTMLSelectElement)?.value;
 
-      let data = JSON.stringify([3, id,{status: status}]);
-      this.websocket.send(data)
+      this.sendConfirmation(id, {status: status})
 
-      let value = this.remoteStopTransactionConfSelectTransactionId.selectedIndex
-      this.remoteStopTransactionConfSelectTransactionId.removeChild(this.remoteStopTransactionConfSelectTransactionId[value])
+      let value = this.remoteStopTransactionConfirmationSelectTransactionId.selectedIndex
+      this.remoteStopTransactionConfirmationSelectTransactionId.removeChild(this.remoteStopTransactionConfirmationSelectTransactionId[value])
 
-      if (this.remoteStopTransactionConfSelectTransactionId.length === 0){
-        this.sendRemoteStopTransactionConfButton.disabled = true;
+      if (this.remoteStopTransactionConfirmationSelectTransactionId.length === 0){
+        this.sendRemoteStopTransactionConfirmationButton.disabled = true;
       }
     }
 
-    public addTransactionIdToRemoteStopTransactionConfDiv(id: string, transactionId: string): void
+    private addTransactionIdToRemoteStopTransactionConfirmationDiv(id: string, transactionId: string): void
     {
       let option = document.createElement('option');
       option.value = id;
       option.text = transactionId;
-      this.remoteStopTransactionConfSelectTransactionId.add(option)
+      this.remoteStopTransactionConfirmationSelectTransactionId.add(option)
 
-      this.sendRemoteStopTransactionConfButton.disabled = false;
+      this.sendRemoteStopTransactionConfirmationButton.disabled = false;
+    }
+
+    public SendReserveNowConfirmation(RequestDivElement?: HTMLDivElement)
+    {
+      const ReserveNowConfirmationRequestDiv  = RequestDivElement ?? document.querySelector("#ReserveNowConfirmationRequest");
+      const properties                           = ReserveNowConfirmationRequestDiv?.querySelector(".properties")      as HTMLDivElement;
+      const id                                   = (properties?.querySelector("#ReserveNowConfirmationSelect_Id") as HTMLSelectElement)?.value;
+      const status                               = (properties?.querySelector("#ReserveNowConfirmationSelect_Status") as HTMLSelectElement)?.value;
+
+      this.sendConfirmation(id, {status: status})
+
+      let value = this.reserveNowConfirmationSelectReservationId.selectedIndex
+      this.reserveNowConfirmationSelectReservationId.removeChild(this.reserveNowConfirmationSelectReservationId[value])
+
+      if (this.reserveNowConfirmationSelectReservationId.length === 0){
+        this.sendReserveNowConfirmationButton.disabled = true;
+      }
+    }
+
+    private addReservationIdToReserveNowConfirmationDiv(id: string, reservationId: string) {
+      let option = document.createElement('option');
+      option.value = id;
+      option.text = reservationId;
+      this.reserveNowConfirmationSelectReservationId.add(option)
+
+      this.sendReserveNowConfirmationButton.disabled = false;
     }
 }
