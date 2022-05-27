@@ -17,29 +17,41 @@
 
 ///<reference path="OCPPv1_6.ts" />
 
-class chargingStationApp {
+class chargingStationApp
+{
 
     //#region Data
 
-    private readonly proxyOCPPv1_6:  OCPPv1_6;
-    private readonly LogView:        HTMLDivElement;
+    private proxyOCPPv1_6: OCPPv1_6 | undefined;
+    private LogView: HTMLDivElement;
+    private readonly connectionInput: HTMLInputElement;
+    private readonly connectionButton: HTMLButtonElement;
 
     //#endregion
 
     constructor()
     {
+        this.connectionInput  = document.querySelector('#chargePointId') as HTMLInputElement;
+        this.connectionButton = document.querySelector('#connection') as HTMLButtonElement;
+        this.LogView          = document.querySelector('#logView') as HTMLDivElement;
 
-        this.proxyOCPPv1_6  = new OCPPv1_6((t) => this.writeToScreen(t));
-
-        this.LogView        = document.querySelector("#logView") as HTMLDivElement;
-
-    }
-
-    private writeToScreen(message: string) {
-
-        this.LogView.insertAdjacentHTML("afterbegin",
-                                       "<p>" + message + "</p>");
+        this.connectionButton.onclick = () => this.connection();
 
     }
 
- }
+    private connection(): void
+    {
+        let chargingPointId            = this.connectionInput.value;
+        let wsUri                      = 'ws://164.90.164.22:8180/steve/websocket/CentralSystemService/' + chargingPointId;
+        this.proxyOCPPv1_6             = new OCPPv1_6((t) => this.writeToScreen(t), wsUri);
+        this.connectionButton.disabled = true;
+        this.connectionInput.disabled  = true;
+    }
+
+    private writeToScreen(message: string)
+    {
+        this.LogView.insertAdjacentHTML('afterbegin',
+            '<p>' + message + '</p>');
+    }
+
+}

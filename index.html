@@ -34,22 +34,24 @@
 
             <div id="buttons">
 
-                <button id="ShowBootNotificationRequestButton">Boot Notification</button>
-                <button id="ShowHeartbeatRequestButton">Heartbeat</button>
-
-                <button id="ShowAuthorizeRequestButton">Authorize</button>
-                <button id="ShowStartTransactionRequestButton">Start Transaction</button>
-                <button id="ShowStatusNotificationRequestButton">Status Notification</button>
-                <button id="ShowMeterValuesRequestButton">Meter Values</button>
-                <button id="ShowStopTransactionRequestButton">Stop Transaction</button>
-
-                <button id="ShowDataTransferRequestButton">Data Transfer</button>
-                <button id="ShowDiagnosticsStatusNotificationRequestButton">Diagnostics Status Notification</button>
-                <button id="ShowFirmwareStatusNotificationRequestButton">Firmware Status Notification</button>
-
-                <button id="ShowRAWRequestButton">RAW Request</button>
-                <button id="ShowRemoteStopTransactionConfirmationButton">RemoteStopTransaction Confirmation</button>
-                <button id="ShowReserveNowConfirmationButton">ReserveNow Confirmation</button>
+                <span>
+                    <input id="chargePointId" type="text">
+                    <button type="button" id="connection">Connection</button>
+                </span>
+                <button type="button" disabled id="ShowBootNotificationRequestButton">Boot Notification</button>
+                <button type="button" disabled id="ShowHeartbeatRequestButton">Heartbeat</button>
+                <button type="button" disabled id="ShowAuthorizeRequestButton">Authorize</button>
+                <button type="button" disabled id="ShowStartTransactionRequestButton">Start Transaction</button>
+                <button type="button" disabled id="ShowStatusNotificationRequestButton">Status Notification</button>
+                <button type="button" disabled id="ShowMeterValuesRequestButton">Meter Values</button>
+                <button type="button" disabled id="ShowStopTransactionRequestButton">Stop Transaction</button>
+                <button type="button" disabled id="ShowDataTransferRequestButton">Data Transfer</button>
+                <button type="button" disabled id="ShowDiagnosticsStatusNotificationRequestButton">Diagnostics Status Notification</button>
+                <button type="button" disabled id="ShowFirmwareStatusNotificationRequestButton">Firmware Status Notification</button>
+                <button type="button" disabled id="ShowRAWRequestButton">RAW Request</button>
+                <button type="button" disabled id="ShowRemoteStartTransactionConfirmationButton">RemoteStartTransaction Confirmation</button>
+                <button type="button" disabled id="ShowRemoteStopTransactionConfirmationButton">RemoteStopTransaction Confirmation</button>
+                <button type="button" disabled id="ShowReserveNowConfirmationButton">ReserveNow Confirmation</button>
 
             </div>
 
@@ -405,7 +407,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="key" style="padding-left: 20px" ><u>Sampled Value</u></div>
+                            <div class="key" style="padding-left: 20px"><u>Sampled Value</u></div>
                         </div>
                         <div class="row">
                             <div class="key" style="padding-left: 20px">Value</div>
@@ -598,6 +600,31 @@
                         </div>
                     </div>
                     <button id="RAWRequestButton" class="commandButton">send</button>
+                </div>
+
+                <div id="RemoteStartTransactionConfirmationRequest" class="command">
+                    <div class="description">RemoteStartTransaction.conf</div>
+                    <div class="properties">
+                        <div class="row">
+                            <div class="key">Connector id</div>
+                            <div class="value">
+                                <select id="RemoteStartTransactionConfirmationSelect_Id">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key">Status</div>
+                            <div class="value">
+                                <select id="RemoteStartTransactionConfirmationSelect_Status">
+                                    <option>Accepted</option>
+                                    <option>Rejected</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="RemoteStartTransactionConfirmationButton" class="commandButton" disabled>send
+                        </button>
+                    </div>
+
                 </div>
 
                 <div id="RemoteStopTransactionConfirmationRequest" class="command">
