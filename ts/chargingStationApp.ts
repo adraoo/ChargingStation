@@ -49,7 +49,7 @@ class chargingStationApp
         let tenantId        = this.tenantId.value;
         let tokenId         = this.tokenId.value;
 
-        let wsUri                      = 'ws://localhost:8010/OCPP16/' + tenantId + '/' + tokenId + '/' + chargingPointId;
+        let wsUri                      = 'ws://164.90.164.22:8010/OCPP16/' + tenantId + '/' + tokenId + '/' + chargingPointId;
         this.proxyOCPPv1_6             = new OCPPv1_6((t) => this.writeToScreen(t), wsUri, protocol);
         this.connectionButton.disabled = true;
         this.connectionInput.disabled  = true;
