@@ -16,7 +16,6 @@
  */
 
 ///<reference path="OCPPv1_6.ts" />
-
 class chargingStationApp
 {
 
@@ -24,6 +23,8 @@ class chargingStationApp
 
     private proxyOCPPv1_6: OCPPv1_6 | undefined;
     private LogView: HTMLDivElement;
+    private readonly tenantId: HTMLInputElement;
+    private readonly tokenId: HTMLInputElement;
     private readonly connectionInput: HTMLInputElement;
     private readonly connectionButton: HTMLButtonElement;
 
@@ -31,6 +32,8 @@ class chargingStationApp
 
     constructor()
     {
+        this.tenantId         = document.querySelector('#tenantId') as HTMLInputElement;
+        this.tokenId          = document.querySelector('#tokenId') as HTMLInputElement;
         this.connectionInput  = document.querySelector('#chargePointId') as HTMLInputElement;
         this.connectionButton = document.querySelector('#connection') as HTMLButtonElement;
         this.LogView          = document.querySelector('#logView') as HTMLDivElement;
@@ -41,9 +44,13 @@ class chargingStationApp
 
     private connection(): void
     {
-        let chargingPointId            = this.connectionInput.value;
-        let wsUri                      = 'ws://164.90.164.22:8180/steve/websocket/CentralSystemService/' + chargingPointId;
-        this.proxyOCPPv1_6             = new OCPPv1_6((t) => this.writeToScreen(t), wsUri);
+        let protocol        = 'ocpp1.6';
+        let chargingPointId = this.connectionInput.value;
+        let tenantId        = this.tenantId.value;
+        let tokenId         = this.tokenId.value;
+
+        let wsUri                      = 'ws://localhost:8010/OCPP16/' + tenantId + '/' + tokenId + '/' + chargingPointId;
+        this.proxyOCPPv1_6             = new OCPPv1_6((t) => this.writeToScreen(t), wsUri, protocol);
         this.connectionButton.disabled = true;
         this.connectionInput.disabled  = true;
     }

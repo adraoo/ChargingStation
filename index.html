@@ -34,10 +34,21 @@
 
             <div id="buttons">
 
-                <span>
-                    <input id="chargePointId" type="text">
-                    <button type="button" id="connection">Connection</button>
-                </span>
+                <div style="display: flex; flex-direction: column">
+                    <span style="margin-bottom: 5px">
+                        <label for="tenantId">Tenant Id</label>
+                        <input id="tenantId" type="text">
+                    </span>
+                    <span style="margin-bottom: 5px">
+                        <label for="tokenId">Token Id</label>
+                        <input id="tokenId" type="text">
+                    </span>
+                    <span style="margin-bottom: 5px">
+                        <label for="chargePointId">Charging Point Id</label>
+                        <input id="chargePointId" type="text">
+                    </span>
+                    <button style="margin-bottom: 10px" type="button" id="connection">Connection</button>
+                </div>
                 <button type="button" disabled id="ShowBootNotificationRequestButton">Boot Notification</button>
                 <button type="button" disabled id="ShowHeartbeatRequestButton">Heartbeat</button>
                 <button type="button" disabled id="ShowAuthorizeRequestButton">Authorize</button>
@@ -49,7 +60,8 @@
                 <button type="button" disabled id="ShowDiagnosticsStatusNotificationRequestButton">Diagnostics Status Notification</button>
                 <button type="button" disabled id="ShowFirmwareStatusNotificationRequestButton">Firmware Status Notification</button>
                 <button type="button" disabled id="ShowRAWRequestButton">RAW Request</button>
-                <button type="button" disabled id="ShowRemoteStartTransactionConfirmationButton">RemoteStartTransaction Confirmation</button>
+                <button type="button" disabled id="ShowRemoteStartTransactionConfirmationButton">RemoteStartTransaction Confirmation
+                </button>
                 <button type="button" disabled id="ShowRemoteStopTransactionConfirmationButton">RemoteStopTransaction Confirmation</button>
                 <button type="button" disabled id="ShowReserveNowConfirmationButton">ReserveNow Confirmation</button>
 
@@ -689,10 +701,6 @@
         Chromium <span id="chrome-version"></span>,
         and Electron <span id="electron-version"></span>. -->
     <br/>
-
-
-    <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
 
     <script>
         // http://www.websocket.org/echo.html

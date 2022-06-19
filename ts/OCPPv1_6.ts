@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 interface WriteToScreenDelegate
 {
     (message: string): void;
@@ -85,22 +84,22 @@ class OCPPv1_6
     //#region Constructor
 
     constructor(WriteToScreen: WriteToScreenDelegate,
-                wsUri: string)
+                wsUri: string, protocol: string)
     {
 
         this.WriteToScreen = WriteToScreen;
 
-        this.websocket = new WebSocket(wsUri, 'ocpp1.6');
+        this.websocket = new WebSocket(wsUri, protocol);
 
-        this.websocket.onopen = (e) => {
+        this.websocket.onopen = (e: any) => {
             this.WriteToScreen('CONNECTED');
         };
 
-        this.websocket.onclose = (e) => {
+        this.websocket.onclose = (e: any) => {
             this.WriteToScreen('DISCONNECTED');
         };
 
-        this.websocket.onmessage = (e) => {
+        this.websocket.onmessage = (e: any) => {
             const [type, id, action, payload] = JSON.parse(e.data);
             switch (action) {
                 case 'RemoteStartTransaction':
@@ -118,7 +117,7 @@ class OCPPv1_6
             this.WriteToScreen('<span>CENTRAL SYSTEM: ' + e.data + '</span>');
         };
 
-        this.websocket.onerror = (e) => {
+        this.websocket.onerror = (e: any) => {
             this.WriteToScreen('<span class=error>ERROR:</span> ' + (e as any).data);
         };
 
