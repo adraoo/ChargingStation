@@ -92,7 +92,7 @@ class OCPPv1_6
         this.websocket = new WebSocket(wsUri, protocol);
 
         this.websocket.onopen = (e: any) => {
-            this.WriteToScreen('CONNECTED');
+            this.WriteToScreen('CONNECTED [' + wsUri + ']');
         };
 
         this.websocket.onclose = (e: any) => {
